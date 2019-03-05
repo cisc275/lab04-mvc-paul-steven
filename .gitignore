@@ -1,0 +1,7 @@
+*.class
+*.log
+*.jar
+*.zip
+.DS_Store
+*~
+\#*\#
