@@ -1,4 +1,3 @@
-package lab2;
 /**
  * View: Contains everything about graphics and images
  * Know size of world, which images to load etc
@@ -20,91 +19,89 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class View {
-        private String file_location = "../resources/";
+    private String file_location = "../resources/";
 
-        private final int frameWidth;
-        private final int frameHeight;
+    private final int frameWidth;
+    private final int frameHeight;
 
-        private final int imgWidth;
-        private final int imgHeight;
+    private final int imgWidth;
+    private final int imgHeight;
 
-        private int frameCount = 10;
-        private EnumMap<Direction, BufferedImage[]> pics;
+    private int frameCount = 10;
+    private EnumMap<Direction, BufferedImage[]> pics;
 
-        private Direction direction;;
-        private int frameNum = 0;
-        private int xLoc;
-        private int yLoc;
+    private Direction direction;;
+    private int frameNum = 0;
+    private int xLoc;
+    private int yLoc;
 
-        private JFrame frame;
+    private JFrame frame;
 
-        public View() {
-                this(500, 300, 165, 165);
-        }
+    public View() {
+        this(500, 300, 165, 165);
+    }
 
-        public View(int w, int h, int imgW, int imgH) {
-                this.frameWidth = w;
-                this.frameHeight = h;
-                this.imgWidth = imgW;
-                this.imgHeight = imgH;
+    public View(int w, int h, int imgW, int imgH) {
+        this.frameWidth = w;
+        this.frameHeight = h;
+        this.imgWidth = imgW;
+        this.imgHeight = imgH;
 
-                this.loadImages(file_location);
-                this.buildFrame();
-        }
+        this.loadImages(file_location);
+        this.buildFrame();
+    }
 
-        public void update(int x, int y, Direction d) {
-                this.xLoc = x;
-                this.yLoc = y;
-                this.direction = d;
-                frameNum = (frameNum + 1) % frameCount;
-                frame.repaint();
-        }
+    public void update(int x, int y, Direction d) {
+        this.xLoc = x;
+        this.yLoc = y;
+        this.direction = d;
+        frameNum = (frameNum + 1) % frameCount;
+        frame.repaint();
+    }
 
-        public int getWidth() { return this.frameWidth; }
-        public int getHeight() { return this.frameHeight; }
-        public int getImageWidth() { return this.imgWidth; }
-        public int getImageHeight() { return this.imgHeight; }
+    public int getWidth() { return this.frameWidth; }
+    public int getHeight() { return this.frameHeight; }
+    public int getImageWidth() { return this.imgWidth; }
+    public int getImageHeight() { return this.imgHeight; }
 
-        private void loadImages(String filepath) {
-                pics = new EnumMap<Direction, BufferedImage[]>(Direction.class);
+    private void loadImages(String filepath) {
+        pics = new EnumMap<Direction, BufferedImage[]>(Direction.class);
 
         for (Direction d : Direction.values()) {
-                String filename = "orc_forward_" + d.getName() +".png";
-                File file = new File(filepath + filename );
-                if (!file.isFile()) {
-                        continue;
-                }
-                BufferedImage img = createImage(file);
-                pics.put(d, new BufferedImage[frameCount]);
-                BufferedImage[] temp = pics.get(d);
-                for(int j = 0; j < frameCount; j++)
-                        temp[j] = img.getSubimage(imgWidth*j, 0, imgWidth, imgHeight);
+            String filename = "orc_forward_" + d.getName() +".png";
+            File file = new File(filepath + filename );
+            if (!file.isFile()) {
+                continue;
+            }
+            BufferedImage img = createImage(file);
+            pics.put(d, new BufferedImage[frameCount]);
+            BufferedImage[] temp = pics.get(d);
+            for(int j = 0; j < frameCount; j++)
+                temp[j] = img.getSubimage(imgWidth*j, 0, imgWidth, imgHeight);
         }
     }
-         private BufferedImage createImage(File file){
-                BufferedImage bufferedImage;
-                try {
-                        bufferedImage = ImageIO.read(file);
-                        return bufferedImage;
-                } catch (IOException e) {
-                        e.printStackTrace();
+    private BufferedImage createImage(File file){
+        BufferedImage bufferedImage;
+        try {
+            bufferedImage = ImageIO.read(file);
+            return bufferedImage;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @SuppressWarnings("serial")
+    private void buildFrame() {
+        frame = new JFrame();
+        frame.getContentPane().add(new JPanel() {
+                public void paint(Graphics g) {
+                    g.drawImage(pics.get(direction)[frameNum], xLoc, yLoc, Color.gray, this);
                 }
-                return null;
-         }
-
-        @SuppressWarnings("serial")
-        private void buildFrame() {
-                        frame = new JFrame();
-                        frame.getContentPane().add(new JPanel() {
-                                public void paint(Graphics g) {
-                                        g.drawImage(pics.get(direction)[frameNum], xLoc, yLoc, Color.gray, this);
-                                }
-                        });
-                frame.setBackground(Color.gray);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                frame.setSize(frameWidth, frameHeight);
-                frame.setVisible(true);
-                }
-
-
+            });
+        frame.setBackground(Color.gray);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(frameWidth, frameHeight);
+        frame.setVisible(true);
+    }
 }
