@@ -20,7 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class View {
-        private String file_location = "./imgs/";
+        private String file_location = "../resources/";
 
         private final int frameWidth;
         private final int frameHeight;
