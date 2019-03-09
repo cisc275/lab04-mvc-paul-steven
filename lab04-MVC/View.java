@@ -9,6 +9,7 @@
  **/
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -48,6 +49,7 @@ public class View {
         this.imgHeight = imgH;
 
         this.loadImages(file_location);
+
         this.buildFrame();
     }
 
@@ -94,14 +96,17 @@ public class View {
     @SuppressWarnings("serial")
     private void buildFrame() {
         frame = new JFrame();
-        frame.getContentPane().add(new JPanel() {
-                public void paint(Graphics g) {
-                    g.drawImage(pics.get(direction)[frameNum], xLoc, yLoc, Color.gray, this);
-                }
-            });
         frame.setBackground(Color.gray);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(frameWidth, frameHeight);
+        frame.getContentPane().add(new JPanel() {
+                @Override
+                public void paint(Graphics g) {
+                    g.toString();
+                    g.drawImage(pics.get(direction)[frameNum], xLoc, yLoc, Color.gray, this);
+
+                }
+            });
         frame.setVisible(true);
     }
 }
